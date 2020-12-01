@@ -1,8 +1,8 @@
-# adventofcode-xxxx
-Solutions to xxxx [Advent of Code] [1]
+# adventofcode-2020
+Solutions to 2020 [Advent of Code] [1]
 
 ## Project Setup
-This project creates a folder for each day problem for Advent of Code solutions.  Basic structure is:
+This project contains a folder for each day of Advent of Code.  Basic structure is:
 
 Folder  	| Description
 -------		| ------------- 

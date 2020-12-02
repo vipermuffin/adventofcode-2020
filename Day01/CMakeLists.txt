@@ -42,7 +42,10 @@ endif()
 add_executable (${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} "${PROJECT_NAME}_lib" Threads::Threads)
 set_target_properties(${PROJECT_NAME} PROPERTIES RESOURCE ${PROJ_RESOURCE_FILES})
-
+if(MSVC)
+    set_target_properties(${PROJECT_NAME} PROPERTIES RESOURCE ${PROJ_RESOURCE_FILES} LINK_FLAGS_RELEASE "/SUBSYSTEM:CONSOLE")
+    set ( gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll" FORCE)
+endif()
 #Setup Unit Testing
 if (skip_test)
     #We apparently don't want unit tests so just go ahead a not make them

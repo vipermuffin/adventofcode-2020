@@ -8,7 +8,6 @@
 //
 #pragma once
 #include <string>
-#include <vector>
 
 namespace AocDay02 {
 //Function Definitions

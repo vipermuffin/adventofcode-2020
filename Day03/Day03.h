@@ -12,5 +12,5 @@
 
 namespace AocDay03 {
 //Function Definitions
-
+    int32_t findTreesWithSlope(const std::vector<std::string>& treeMap, std::pair<int32_t,int32_t> slope);
 }

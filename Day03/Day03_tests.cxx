@@ -29,16 +29,55 @@ TEST(Y2020_SolveDay3, FinalSolutionPartB) {
 }
 
 TEST(Y2020_Day3Example,Test1) {
-    int x = 0;
+    std::vector<string> map{
+        "..##.......",
+        "#...#...#..",
+        ".#....#..#.",
+        "..#.#...#.#",
+        ".#...##..#.",
+        "..#.##.....",
+        ".#.#.#....#",
+        ".#........#",
+        "#.##...#...",
+        "#...##....#",
+        ".#..#...#.#"
+    };
+    auto x = findTreesWithSlope(map,make_pair(3,1));
     EXPECT_EQ(7,x);
 }
 
 TEST(Y2020_Day3Example,Test2) {
-    int x = 0;
-    EXPECT_EQ(336,x);
+    std::vector<string> map{
+        "..##.......",
+        "#...#...#..",
+        ".#....#..#.",
+        "..#.#...#.#",
+        ".#...##..#.",
+        "..#.##.....",
+        ".#.#.#....#",
+        ".#........#",
+        "#.##...#...",
+        "#...##....#",
+        ".#..#...#.#"
+    };
+    auto x = findTreesWithSlope(map,make_pair(1,1));
+    EXPECT_EQ(2,x);
 }
 
 TEST(Y2020_Day3Example,Test3) {
-    int x = 0;
-    EXPECT_EQ(0,x);
+    std::vector<string> map{
+        "..##.......",
+        "#...#...#..",
+        ".#....#..#.",
+        "..#.#...#.#",
+        ".#...##..#.",
+        "..#.##.....",
+        ".#.#.#....#",
+        ".#........#",
+        "#.##...#...",
+        "#...##....#",
+        ".#..#...#.#"
+    };
+    auto x = findTreesWithSlope(map,make_pair(1,2));
+    EXPECT_EQ(2,x);
 }

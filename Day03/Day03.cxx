@@ -11,24 +11,8 @@
 #include "AoCUtils.h"
 //Common Libraries
 #include <algorithm> //std::sort, find, for_each, max_element, etc
-//#include <array>
 #include <climits>   //INT_MIN, INT_MAX, etc.
-//#include <chrono>
-//#include <iostream>
-//#include <fstream> //ifstream
-//#include <functional> //std::function
-//#include <iomanip> //setfill setw hex
-//#include <map>
-//#include <math.h> //sqrt
 #include <numeric> //std::accumulate
-//#include <queue>
-//#include <regex>
-//#include <set>
-//#include <sstream>
-//#include <thread>
-//#include <tuple>
-//#include <unordered_map>
-//#include <unordered_set>
 
 
 using namespace std;
@@ -37,77 +21,33 @@ namespace AocDay03 {
     static const std::string InputFileName = "Day03.txt";
     std::string solvea() {
         auto input = parseFileForLines(InputFileName);
-        int32_t x = -3;
-        int32_t count = 0;
-        for(const auto& line : input) {
-            x+=3;
-            if(x >= line.size()) {
-                x -= line.size();
-            }
-            count += line[x] == '#' ? 1 : 0;
-        }
 
-		return to_string(count);
+		return to_string(findTreesWithSlope(input, make_pair(3,1)));
     }
 
     std::string solveb() {
         auto input = parseFileForLines(InputFileName);
-        int32_t x = -3;
-        int32_t count = 0;
+        vector<pair<int32_t,int32_t>> slopes {{1,1},{3,1},{5,1},{7,1},{1,2}};
         vector<int32_t> vals{};
-        for(const auto& line : input) {
-            x+=3;
-            if(x >= line.size()) {
-                x -= line.size();
-            }
-            count += line[x] == '#' ? 1 : 0;
-        }
-        vals.push_back(count);
-        x = -1;
-        count = 0;
-        for(const auto& line : input) {
-            x+=1;
-            if(x >= line.size()) {
-                x -= line.size();
-            }
-            count += line[x] == '#' ? 1 : 0;
-        }
-        vals.push_back(count);
-        x = -5;
-        count = 0;
-        for(const auto& line : input) {
-            x+=5;
-            if(x >= line.size()) {
-                x -= line.size();
-            }
-            count += line[x] == '#' ? 1 : 0;
-        }
-        vals.push_back(count);
-        x = -7;
-        count = 0;
-        for(const auto& line : input) {
-            x+=7;
-            if(x >= line.size()) {
-                x -= line.size();
-            }
-            count += line[x] == '#' ? 1 : 0;
-        }
-        vals.push_back(count);
         
-        x = 0;
-        count = 0;
-        auto itr = input.begin()+2;
-        while(itr < input.end()) {
-            x++;
-            if(x >= itr->size()) {
-                x -= itr->size();
-            }
-            count += (*itr)[x] == '#' ? 1 : 0;
-            itr+=2;
-        }
-        vals.push_back(count);
+        for_each(slopes.begin(), slopes.end(),
+                 [&input,&vals](std::pair<int32_t,int32_t> xy) {vals.push_back(findTreesWithSlope(input, xy));});
         
-        return to_string(accumulate(vals.begin(), vals.end(), 1,multiplies<int32_t>()));
+        return to_string(accumulate(vals.begin(), vals.end(), 1,multiplies<int64_t>()));
+    }
+    
+    int32_t findTreesWithSlope(const std::vector<std::string>& treeMap, std::pair<int32_t,int32_t> slope) {
+        int32_t charIdx{0}, count{0};
+        auto itr = treeMap.begin()+slope.second;
+        while(itr < treeMap.end()) {
+            charIdx += slope.first;
+            if(charIdx >= itr->size()) {
+                charIdx -= itr->size();
+            }
+            count += (*itr)[charIdx] == '#' ? 1 : 0;
+            itr+=slope.second;
+        }
+        return count;
     }
 
 }

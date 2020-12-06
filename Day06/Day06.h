@@ -12,5 +12,8 @@
 
 namespace AocDay06 {
 //Function Definitions
+    std::vector<std::string> buildGroupStrings(const std::vector<std::string>&);
+    int32_t countAnyYesPerGroup(const std::vector<std::string>&);
+    int32_t countAllYesPerGroup(const std::vector<std::string>&);
 
 }

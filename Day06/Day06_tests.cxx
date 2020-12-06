@@ -29,16 +29,72 @@ TEST(Y2020_SolveDay6, FinalSolutionPartB) {
 }
 
 TEST(Y2020_Day6Example,Test1) {
-    int x = 0;
-    EXPECT_EQ(0,x);
+    vector<string> g{
+        "abc",
+        "",
+        "a",
+        "b",
+        "c",
+        "",
+        "ab",
+        "ac",
+        "",
+        "a",
+        "a",
+        "a",
+        "a",
+        "",
+        "b"
+    };
+    auto x = buildGroupStrings(g);
+    ASSERT_EQ(5,x.size());
+    EXPECT_EQ("abc",x[0]);
+    EXPECT_EQ("a,b,c",x[1]);
+    EXPECT_EQ("ab,ac",x[2]);
+    EXPECT_EQ("a,a,a,a",x[3]);
+    EXPECT_EQ("b",x[4]);
 }
 
 TEST(Y2020_Day6Example,Test2) {
-    int x = 0;
-    EXPECT_EQ(0,x);
+    vector<string> g{
+        "abc",
+        "",
+        "a",
+        "b",
+        "c",
+        "",
+        "ab",
+        "ac",
+        "",
+        "a",
+        "a",
+        "a",
+        "a",
+        "",
+        "b"
+    };
+    auto x = buildGroupStrings(g);
+    EXPECT_EQ(11,countAnyYesPerGroup(x));
 }
 
 TEST(Y2020_Day6Example,Test3) {
-    int x = 0;
-    EXPECT_EQ(0,x);
+    vector<string> g{
+        "abc",
+        "",
+        "a",
+        "b",
+        "c",
+        "",
+        "ab",
+        "ac",
+        "",
+        "a",
+        "a",
+        "a",
+        "a",
+        "",
+        "b"
+    };
+    auto x = buildGroupStrings(g);
+    EXPECT_EQ(6,countAllYesPerGroup(x));
 }

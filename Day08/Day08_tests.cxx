@@ -29,16 +29,37 @@ TEST(Y2020_SolveDay8, FinalSolutionPartB) {
 }
 
 TEST(Y2020_Day8Example,Test1) {
-    int x = 0;
-    EXPECT_EQ(0,x);
+    vector<string> prog {
+        "nop +0",
+        "acc +1",
+        "jmp +4",
+        "acc +3",
+        "jmp -3",
+        "acc -99",
+        "acc +1",
+        "jmp -4",
+        "acc +6"
+    };
+    bool exited{true};
+    auto x = runProgram(prog, exited);
+    EXPECT_EQ(5,x);
+    EXPECT_FALSE(exited);
 }
 
 TEST(Y2020_Day8Example,Test2) {
-    int x = 0;
-    EXPECT_EQ(0,x);
-}
-
-TEST(Y2020_Day8Example,Test3) {
-    int x = 0;
-    EXPECT_EQ(0,x);
+    vector<string> prog {
+        "nop +0",
+        "acc +1",
+        "jmp +4",
+        "acc +3",
+        "jmp -3",
+        "acc -99",
+        "acc +1",
+        "jmp -4",
+        "acc +6"
+    };
+    bool exited{false};
+    auto x = fixCorruptProgram(prog, exited);
+    EXPECT_EQ(8,x);
+    EXPECT_TRUE(exited);
 }

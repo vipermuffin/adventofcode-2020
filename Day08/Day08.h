@@ -12,5 +12,6 @@
 
 namespace AocDay08 {
 //Function Definitions
-
+    int32_t runProgram(const std::vector<std::string>&, bool&);
+    int32_t fixCorruptProgram(const std::vector<std::string>&, bool&);
 }

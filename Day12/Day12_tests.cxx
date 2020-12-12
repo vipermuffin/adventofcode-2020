@@ -48,6 +48,6 @@ TEST(Y2020_Day12Example,Test2) {
         "R90",
         "F11"
     };
-    auto x = navigatePath2(input);
+    auto x = navigatePath(input,true);
     EXPECT_EQ(286,x);
 }

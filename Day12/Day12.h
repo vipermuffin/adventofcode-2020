@@ -12,6 +12,5 @@
 
 namespace AocDay12 {
 //Function Definitions
-    int32_t navigatePath(const std::vector<std::string>&);
-    int64_t navigatePath2(const std::vector<std::string>&);
+    int32_t navigatePath(const std::vector<std::string>&, const bool useWaypoint = false);
 }

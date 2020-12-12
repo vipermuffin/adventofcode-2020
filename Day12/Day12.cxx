@@ -27,45 +27,36 @@ namespace AocDay12 {
 
     std::string solveb() {
         auto input = parseFileForLines(InputFileName);
-		return to_string(navigatePath2(input));
+		return to_string(navigatePath(input,true));
     }
     
-    int32_t navigatePath(const std::vector<std::string>& input) {
-        int32_t x{0},y{0};
+    int32_t navigatePath(const std::vector<std::string>& input, const bool useWaypoint) {
+        int32_t x{0},y{0},sx{0},sy{0};
         string d{"ESWN"};
         unordered_map<char, function<void(int)>> op{
             {'N',[&](int32_t val){y+=val;}},
             {'S',[&](int32_t val){y-=val;}},
             {'E',[&](int32_t val){x+=val;}},
             {'W',[&](int32_t val){x-=val;}},
-            {'L',[&](int32_t val){std::rotate(d.rbegin(),d.rbegin()+(val/90),d.rend());}},
-            {'R',[&](int32_t val){std::rotate(d.begin(),d.begin()+(val/90),d.end());}},
         };
-        for(const auto& line : input) {
-            char c = line[0] == 'F' ? d[0] : line[0];
-            int32_t val = stoi(string{line.begin()+1,line.end()});
-            op[c](val);
+        
+        if(useWaypoint) {
+            x=10;y=1;
+            op.emplace('L',[&](int32_t val){val/=90;while(val-->0) {std::swap(x,y);x=-x;}});
+            op.emplace('R',[&](int32_t val){val/=90;while(val-->0) {std::swap(x,y);y=-y;}});
+            op.emplace('F',[&](int32_t val){sx += x*val;sy += y*val;});
+        } else {
+            op.emplace('L',[&](int32_t val){std::rotate(d.rbegin(),d.rbegin()+(val/90),d.rend());});
+            op.emplace('R',[&](int32_t val){std::rotate(d.begin(),d.begin()+(val/90),d.end());});
+            op.emplace('F',[&](int32_t val){op[d[0]](val);});
+        }
+        
+        for_each(input.begin(),input.end(),[&op](const string& s){op[s[0]](stoi(string{s.begin()+1,s.end()}));});
+        
+        if(useWaypoint) {
+            std::swap(x,sx);
+            std::swap(y,sy);
         }
         return (x > 0 ? x : -x) + (y > 0 ? y : -y);
-    }
-    
-    int64_t navigatePath2(const std::vector<std::string>& input) {
-        int32_t x{10},y{1};
-        int64_t sx{0},sy{0};
-        unordered_map<char, function<void(int)>> op{
-            {'N',[&](int32_t val){y+=val;}},
-            {'S',[&](int32_t val){y-=val;}},
-            {'E',[&](int32_t val){x+=val;}},
-            {'W',[&](int32_t val){x-=val;}},
-            {'L',[&](int32_t val){val/=90;while(val-->0) {std::swap(x,y);x=-x;}}},
-            {'R',[&](int32_t val){val/=90;while(val-->0) {std::swap(x,y);y=-y;}}},
-            {'F',[&](int32_t val){sx += x*val;sy += y*val;}}
-        };
-        for(const auto& line : input) {
-            char c = line[0];
-            int32_t val = stoi(string{line.begin()+1,line.end()});
-            op[c](val);
-        }
-        return (sx > 0 ? sx : -sx) + (sy > 0 ? sy : -sy);
     }
 }

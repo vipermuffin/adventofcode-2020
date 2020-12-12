@@ -42,16 +42,16 @@ TEST(Y2020_Day11Example,Test1a) {
         "L.LLLLL.LL"
     };
     vector<string> result {
-"#.##.##.##",
-"#######.##",
-"#.#.#..#..",
-"####.##.##",
-"#.##.##.##",
-"#.#####.##",
+        "#.##.##.##",
+        "#######.##",
+        "#.#.#..#..",
+        "####.##.##",
+        "#.##.##.##",
+        "#.#####.##",
         "..#.#.....",
-"##########",
-"#.######.#",
-"#.#####.##"
+        "##########",
+        "#.######.#",
+        "#.#####.##"
     };
     performSeating(map);
     for(int i = 0; i < map.size();i++) {
@@ -61,16 +61,16 @@ TEST(Y2020_Day11Example,Test1a) {
 
 TEST(Y2020_Day11Example,Test1b) {
     vector<string> result {
-"#.LL.L#.##",
-"#LLLLLL.L#",
+        "#.LL.L#.##",
+        "#LLLLLL.L#",
         "L.L.L..L..",
-"#LLL.LL.L#",
-"#.LL.LL.LL",
-"#.LLLL#.##",
+        "#LLL.LL.L#",
+        "#.LL.LL.LL",
+        "#.LLLL#.##",
         "..L.L.....",
-"#LLLLLLLL#",
-"#.LLLLLL.L",
-"#.#LLLL.##"
+        "#LLLLLLLL#",
+        "#.LLLLLL.L",
+        "#.#LLLL.##"
     };
     vector<string> map {
         "#.##.##.##",
@@ -86,7 +86,6 @@ TEST(Y2020_Day11Example,Test1b) {
     };
     performSeating(map);
     for(int i = 0; i < map.size();i++) {
-//        cout << i;
         EXPECT_EQ(result[i], map[i]);
     }
 }
@@ -134,7 +133,7 @@ TEST(Y2020_Day11Example,Test2b) {
     auto previousS{s};
     do {
         std::swap(s,previousS);
-        performSeating2(input);
+        performSeating(input,true);
         s = convertMapToString(input);
     }while(s!=previousS);
     auto x = std::count(s.begin(),s.end(),'#');
@@ -161,8 +160,7 @@ TEST(Y2020_Day11Example,Test4) {
         "#.#.#.#",
         ".##.##."
     };
-    auto s = convertMapToString(map);
-    EXPECT_EQ(0,adjacentOccupiedRowCount(s,3,3,map.front().size()));
+    EXPECT_EQ(0,countAdjacentOccupiedSeats(map, 3, 3, true));
 }
 
 TEST(Y2020_Day11Example,Test5) {
@@ -177,8 +175,7 @@ TEST(Y2020_Day11Example,Test5) {
         "#........",
         "...#....."
     };
-    auto s = convertMapToString(map);
-    EXPECT_EQ(8,adjacentOccupiedRowCount(s,4,3,map.front().size()));
+    EXPECT_EQ(8,countAdjacentOccupiedSeats(map, 4, 3, true));
 }
 
 TEST(Y2020_Day11Example,Test6) {
@@ -187,8 +184,7 @@ TEST(Y2020_Day11Example,Test6) {
         ".L.L.#.#.#.#.",
         "............."
     };
-    auto s = convertMapToString(map);
-    EXPECT_EQ(0,adjacentOccupiedRowCount(s,1,1,map.front().size()));
+    EXPECT_EQ(0,countAdjacentOccupiedSeats(map, 1, 1, true));
 }
 
 TEST(Y2020_Day11Example,Test7) {
@@ -216,9 +212,8 @@ TEST(Y2020_Day11Example,Test7) {
         "#.######.#",
         "#.#####.##"
     };
-    performSeating2(map);
+    performSeating(map,true);
     for(int i = 0; i < map.size();i++) {
-//        cout << i;
         EXPECT_EQ(result[i], map[i]);
     }
 }

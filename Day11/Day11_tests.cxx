@@ -12,6 +12,8 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <algorithm>
+
 namespace AocDay11{
     extern std::string solvea();
     extern std::string solveb();

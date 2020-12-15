@@ -35,20 +35,22 @@ namespace AocDay15 {
 
     int32_t findNumberSpoken(const std::vector<int32_t>& startList, const int32_t num) {
         int32_t turn{1};
-        unordered_map<int32_t, std::pair<int32_t,int32_t>> x{};
+        //Since you can't have a number larger than the number of turns,
+        //A vector can be used with a size of the target num turns
+        vector<std::pair<int32_t,int32_t>> x{};
+        x.resize(num);
+
         for(const auto& val : startList) {
             x[val] = make_pair(turn++,0);
         }
-        auto vals{startList};
-        vals.reserve(num);
         int32_t lastVal = startList.back();
         while(turn <= num) {
             int32_t newVal = x[lastVal].second == 0 ? 0 : x[lastVal].first - x[lastVal].second;
             x[newVal].second = x[newVal].first;
             x[newVal].first = turn++;
             lastVal = newVal;
-            vals.push_back(newVal);
         }
+        
         return lastVal;
     }
 }

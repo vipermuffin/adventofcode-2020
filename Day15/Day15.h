@@ -13,5 +13,4 @@
 namespace AocDay15 {
 //Function Definitions
     int32_t findNumberSpoken(const std::vector<int32_t>& startList, const int32_t num);
-
 }

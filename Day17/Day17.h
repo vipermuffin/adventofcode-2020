@@ -24,6 +24,5 @@ namespace AocDay17 {
     using PointMap = std::unordered_map<uint64_t, bool>;
     
     PointMap initMap(const std::vector<std::string>&);
-    uint64_t performCycle(PointMap& points);
-    uint64_t performCycle2(PointMap& points);
+    uint64_t performCycle(PointMap& points, bool use4d = false);
 }

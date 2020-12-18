@@ -11,24 +11,7 @@
 #include "AoCUtils.h"
 //Common Libraries
 #include <algorithm> //std::sort, find, for_each, max_element, etc
-//#include <array>
 #include <climits>   //INT_MIN, INT_MAX, etc.
-//#include <chrono>
-//#include <iostream>
-//#include <fstream> //ifstream
-//#include <functional> //std::function
-//#include <iomanip> //setfill setw hex
-//#include <map>
-//#include <math.h> //sqrt
-//#include <numeric> //std::accumulate
-//#include <queue>
-//#include <regex>
-//#include <set>
-//#include <sstream>
-//#include <thread>
-//#include <tuple>
-//#include <unordered_map>
-//#include <unordered_set>
 
 
 using namespace std;
@@ -50,7 +33,7 @@ namespace AocDay17 {
         auto map = initMap(input);
         uint64_t x;
         for(int i = 0; i < 6; i++) {
-            x = performCycle2(map);
+            x = performCycle(map,true);
         }
         return to_string(x);
     }
@@ -71,102 +54,13 @@ namespace AocDay17 {
         return m;
     }
 
-    uint64_t performCycle(PointMap& points) {
-        vector<uint64_t> pointsToUpdate{};
-        vector<uint64_t> updated{};
-        auto sz = points.size();
-        sz *= 26;
-        pointsToUpdate.reserve(sz);
-        updated.reserve(sz);
-        //Check if Point should change state and build list of new points to go through
-        for(const auto& kvp : points) {
-            uint16_t count{0};
-            for(int16_t x = -1; x < 2; x++) {
-                for(int16_t y = -1; y < 2; y++) {
-                    for(int16_t z = -1; z < 2; z++) {
-                        if(!(x==0 && y==0 && z==0)) {
-                            PointInfo tmp{kvp.first};
-                            tmp.val[X] += x;
-                            tmp.val[Y] += y;
-                            tmp.val[Z] += z;
-                            pointsToUpdate.push_back(tmp.all);
-                            if(points.count(tmp.all) > 0) {
-                                count += points[tmp.all] ? 1 : 0;
-                            }
-                        }
-                    }
-                }
-            }
-            PointInfo tmp2{kvp.first};
-            tmp2.val[U] = kvp.second;
-//            cout << tmp2.val[X] << "x" << tmp2.val[Y] << "x" << tmp2.val[Z] << "-->" << count << endl;
-            if(kvp.second) {
-                if(count < 2 || count > 3) {
-                    updated.push_back(kvp.first);
-                }
-            } else {
-                if(count == 3) {
-                    PointInfo tmp{kvp.first};
-                    tmp.val[U] = 1;
-                    updated.push_back(tmp.all);
-                }
-            }
-        }
-//        cout << "------------------\n";
-        std::sort(pointsToUpdate.begin(), pointsToUpdate.end());
-        auto itr = pointsToUpdate.begin();
-        while(itr!=pointsToUpdate.end()) {
-            uint16_t count{0};
-            for(int16_t x = -1; x < 2; x++) {
-                for(int16_t y = -1; y < 2; y++) {
-                    for(int16_t z = -1; z < 2; z++) {
-                        if(!(x==0 && y==0 && z==0)) {
-                            PointInfo tmp{*itr};
-                            tmp.val[X] += x;
-                            tmp.val[Y] += y;
-                            tmp.val[Z] += z;
-                            if(points.count(tmp.all) > 0) {
-                                count += points[tmp.all] ? 1 : 0;
-                            }
-                        }
-                    }
-                }
-            }
-            if(points[*itr]) {
-                //Active
-                if(count < 2 || count > 3) {
-                    updated.push_back(*itr);
-                }
-            } else {
-                if(count == 3) {
-                    PointInfo tmp{*itr};
-                    tmp.val[U] = 1;
-                    updated.push_back(tmp.all);
-                }
-            }
-            itr++;
-            while(itr != pointsToUpdate.end() && *(itr-1) == *itr) {
-                itr++;
-            }
-        }
-        
-        //Update Map
-        for(const auto point : updated) {
-            PointInfo tmp{point};
-            bool active = tmp.val[U] == 1;
-//            cout << tmp.val[X] << "x" << tmp.val[Y] << "x" << tmp.val[Z] << "-->" << tmp.val[ACTIVE] << endl;
-            tmp.val[U] = 0;
-            points[tmp.all] = active;
-        }
-        uint64_t activePoints = count_if(points.begin(),points.end(),[](std::pair<uint64_t,bool> x)->bool{return x.second;});
-        return activePoints;
-    }
-    
-    uint64_t performCycle2(PointMap& points) {
+    uint64_t performCycle(PointMap& points, bool use4d) {
         vector<uint64_t> pointsToUpdate{};
         vector<std::pair<uint64_t,bool>> updated{};
         auto sz = points.size();
         sz *= 80;
+        const int16_t umin = use4d ? -1 : 0;
+        const int16_t umax = use4d ? 2 : 1;
         pointsToUpdate.reserve(sz);
         updated.reserve(sz);
         //Check if Point should change state and build list of new points to go through
@@ -175,7 +69,7 @@ namespace AocDay17 {
             for(int16_t x = -1; x < 2; x++) {
                 for(int16_t y = -1; y < 2; y++) {
                     for(int16_t z = -1; z < 2; z++) {
-                        for(int16_t u = -1; u < 2; u++) {
+                        for(int16_t u = umin; u < umax; u++) {
                             if(!(x==0 && y==0 && z==0 && u==0)) {
                                 PointInfo tmp{kvp.first};
                                 tmp.val[X] += x;
@@ -191,8 +85,6 @@ namespace AocDay17 {
                     }
                 }
             }
-//            PointInfo tmp2{kvp.first};
-//            cout << tmp2.val[X] << "x" << tmp2.val[Y] << "x" << tmp2.val[Z] << "x" << tmp2.val[U] <<  "-->" << count << endl;
             bool updatedVal = kvp.second;
             if(kvp.second) {
                 if(count < 2 || count > 3) {
@@ -205,7 +97,6 @@ namespace AocDay17 {
             }
             updated.emplace_back(kvp.first,updatedVal);
         }
-//                cout << "------------------\n";
         std::sort(pointsToUpdate.begin(), pointsToUpdate.end());
         auto itr = pointsToUpdate.begin();
         while(itr!=pointsToUpdate.end()) {
@@ -213,7 +104,7 @@ namespace AocDay17 {
             for(int16_t x = -1; x < 2; x++) {
                 for(int16_t y = -1; y < 2; y++) {
                     for(int16_t z = -1; z < 2; z++) {
-                        for(int16_t u = -1; u < 2; u++) {
+                        for(int16_t u = umin; u < umax; u++) {
                             if(!(x==0 && y==0 && z==0 && u == 0)) {
                                 PointInfo tmp{*itr};
                                 tmp.val[X] += x;

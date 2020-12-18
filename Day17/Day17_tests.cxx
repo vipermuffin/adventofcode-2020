@@ -79,12 +79,12 @@ TEST(Y2020_Day17Example,Test3) {
     };
     
     auto x = initMap(initState);
-    auto ret = performCycle2(x);
+    auto ret = performCycle(x,true);
     EXPECT_EQ(29,ret);
-    ret = performCycle2(x);
-    ret = performCycle2(x);
-    ret = performCycle2(x);
-    ret = performCycle2(x);
-    ret = performCycle2(x);
+    ret = performCycle(x,true);
+    ret = performCycle(x,true);
+    ret = performCycle(x,true);
+    ret = performCycle(x,true);
+    ret = performCycle(x,true);
     EXPECT_EQ(848,ret);
 }

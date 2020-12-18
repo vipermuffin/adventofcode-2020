@@ -57,7 +57,10 @@ else (skip_test)
 	endif (APPLE)
 
 	# This adds another subdirectory, which has 'project(gtest)'.
-	add_subdirectory("${PROJECT_SOURCE_DIR}/../lib/gtest" ./gtest)
+	if (MASTER_PROJECT)
+	else()
+	    add_subdirectory("${PROJECT_SOURCE_DIR}/../lib/gtest" ./gtest)
+	endif (MASTER_PROJECT)
 
 	enable_testing()
 
@@ -68,17 +71,17 @@ else (skip_test)
 	##############
 	# Unit Tests
 	##############
-	add_executable(runUnitTests "${DAY_PREFIX}_tests.cxx")
+	add_executable(runUnitTests${DAY_PREFIX} "${DAY_PREFIX}_tests.cxx")
 
 	# Standard linking to gtest stuff.
-	target_link_libraries(runUnitTests gtest gtest_main)
+	target_link_libraries(runUnitTests${DAY_PREFIX} gtest gtest_main)
 
 	# Extra linking for the project.
-	target_link_libraries(runUnitTests "${PROJECT_NAME}_lib")
+	target_link_libraries(runUnitTests${DAY_PREFIX} "${PROJECT_NAME}_lib")
 
 	# This is so you can do 'make test' to see all your tests run, instead of
 	# manually running the executable runUnitTests to see those specific tests.
-	add_test(NAME "${TEST_PROJ_NAME}" COMMAND runUnitTests)
+	add_test(NAME "${TEST_PROJ_NAME}" COMMAND runUnitTests${DAY_PREFIX})
 
 	# You can also omit NAME and COMMAND. The second argument could be some other
 	# test executable.

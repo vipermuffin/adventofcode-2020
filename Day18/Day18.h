@@ -12,6 +12,6 @@
 
 namespace AocDay18 {
 //Function Definitions
-    int64_t evaluateExpression(const std::string&);
+    int64_t evaluateExpression(const std::string&, bool advMath = false);
     int64_t evaluateAdvExpression(const std::string&);
 }

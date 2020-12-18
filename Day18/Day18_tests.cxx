@@ -36,10 +36,10 @@ TEST(Y2020_Day18Example,Test1) {
 }
 
 TEST(Y2020_Day18Example,Test2) {
-    EXPECT_EQ(51,evaluateAdvExpression("1 + (2 * 3) + (4 * (5 + 6))"));
-    EXPECT_EQ(46,evaluateAdvExpression("2 * 3 + (4 * 5)"));
-    EXPECT_EQ(1445,evaluateAdvExpression("5 + (8 * 3 + 9 + 3 * 4 * 3)"));
-    EXPECT_EQ(669060,evaluateAdvExpression("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))"));
-    EXPECT_EQ(23340,evaluateAdvExpression("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2"));
+    EXPECT_EQ(51,evaluateExpression("1 + (2 * 3) + (4 * (5 + 6))",true));
+    EXPECT_EQ(46,evaluateExpression("2 * 3 + (4 * 5)",true));
+    EXPECT_EQ(1445,evaluateExpression("5 + (8 * 3 + 9 + 3 * 4 * 3)",true));
+    EXPECT_EQ(669060,evaluateExpression("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))",true));
+    EXPECT_EQ(23340,evaluateExpression("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2",true));
 }
 

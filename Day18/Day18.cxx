@@ -35,62 +35,13 @@ namespace AocDay18 {
         std::vector<int64_t> vals;
         vals.reserve(input.size());
         for(const auto& line : input) {
-            vals.push_back(evaluateAdvExpression(line));
+            vals.push_back(evaluateExpression(line,true));
         }
         
         return to_string(std::accumulate(vals.begin(),vals.end(),0LL));
     }
-
-    int64_t evaluateExpression(const std::string& exp) {
-        int64_t result{0};
-        
-        auto itr = exp.begin();
-        char op = '+';
-        while(itr < exp.end()) {
-            size_t idx{0};
-            auto rhs{0};
-            string remaining{itr,exp.end()};
-            try {
-                rhs = stoi(remaining,&idx);
-            } catch (exception &err) {
-                //Parenthesis
-                auto rItr = remaining.begin();
-                idx++;
-                auto idx2{idx};
-                int count{1};
-                while(rItr+idx2 != remaining.end() && count > 0) {
-                    if(*(rItr+idx2) == ')') {
-                        count--;
-                    } else if (*(rItr+idx2) == '(') {
-                        count++;
-                    }
-                    idx2++;
-                }
-                string subExp = remaining.substr(idx,idx2-idx-1);
-                rhs = evaluateExpression(subExp);
-                idx=idx2;
-            }
-            if(op == '+') {
-                result += rhs;
-            }else {
-                result *= rhs;
-            }
-            
-            itr += idx;
-            while(*itr == ' ') {
-                itr++;
-            }
-            //Get operation
-            op = *(itr++);
-
-            while(itr != exp.end() && *itr == ' ') {
-                itr++;
-            }
-        }
-        return result;
-    }
     
-    int64_t evaluateAdvExpression(const std::string& exp) {
+    int64_t evaluateExpression(const std::string& exp, bool advMath) {
         int64_t result{0};
         vector<int64_t> pendingMul{};
         auto itr = exp.begin();
@@ -116,14 +67,18 @@ namespace AocDay18 {
                     idx2++;
                 }
                 string subExp = remaining.substr(idx,idx2-idx-1);
-                rhs = evaluateAdvExpression(subExp);
+                rhs = evaluateExpression(subExp,advMath);
                 idx=idx2;
             }
             if(op == '+') {
                 result += rhs;
             }else {
-                pendingMul.push_back(result);
-                result = rhs;
+                if(advMath) {
+                    pendingMul.push_back(result);
+                    result = rhs;
+                } else {
+                    result *= rhs;
+                }
             }
             
             itr += idx;
@@ -131,11 +86,7 @@ namespace AocDay18 {
                 itr++;
             }
             //Get operation
-            if(itr != exp.end()) {
-                op = *(itr++);
-            } else {
-                op = '0';
-            }
+            op = itr != exp.end() ? *(itr++) : 0;
             
             while(itr != exp.end() && *itr == ' ') {
                 itr++;

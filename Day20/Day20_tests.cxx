@@ -212,35 +212,8 @@ TEST(Y2020_Day20Example,Test3) {
 
 TEST(Y2020_Day20Example,Test4) {
     auto itv = tileFactory(sampleInput);
-    ASSERT_EQ(9,itv.size());
     auto x = findArrangement(itv);
-    EXPECT_EQ(4,x.size());
-}
-
-TEST(Y2020_Day20Example,Test5) {
-    vector<string> input1 {
-        "Tile 2311:",
-        "..##.#..#.",
-        "##..#.....",
-        "#...##..#.",
-        "####.#...#",
-        "##.##.###.",
-        "##...#.###",
-        ".#.#.#..##",
-        "..#....#..",
-        "###...#.#.",
-        "..###..###"
-    };
-    ImageTile t{input1};
-    EXPECT_EQ("2311", t.tileName);
-    t.displayImage();
-    cout << "---" << endl;
-    t.flip();
-    EXPECT_EQ("2311F",t.tileName);
-    t.displayImage(true);
-    cout << "---" << endl;
-    t.rotateClockwise();
-    t.displayImage(true);
-    cout << "---" << endl;
+    ASSERT_EQ(24, x.getImage().size());
+    EXPECT_EQ(303,x.countHash());
 }
 

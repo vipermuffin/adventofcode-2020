@@ -189,3 +189,7 @@ from the example above, you get `1951 * 3079 * 2971 * 1171` =
 
 Assemble the tiles into an image. *What do you get if you multiply
 together the IDs of the four corner tiles?*
+
+"                  # ",
+"#    ##    ##    ###",
+" #  #  #  #  #  #   "

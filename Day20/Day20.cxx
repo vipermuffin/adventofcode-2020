@@ -49,8 +49,9 @@ namespace AocDay20 {
 
     std::string solveb() {
         auto input = parseFileForLines(InputFileName);
-
-		return "---";
+        auto itv = tileFactory(input);
+        auto x = findArrangement(itv);
+		return to_string(x.countHash());
     }
 
     ImageTile::ImageTile(const std::vector<std::string>& image) {
@@ -202,7 +203,7 @@ namespace AocDay20 {
                 idxs.push_back(idx++);
             }
             monsterIdx.push_back(idxs);
-            printVector(idxs);
+//            printVector(idxs);
         }
         auto limit = _image.front().size()-monster.front().size();
         auto itr = _image.begin();
@@ -221,7 +222,7 @@ namespace AocDay20 {
                     total++;
                     for(size_t j = 0;found && j < monster.size(); j++) {
                         for(const auto& idx : monsterIdx[j]) {
-                            (itr+j)->at(idx+i) = 'O';
+                            (*(itr+j))[(idx+i)] = 'O';
                         }
                     }
                 }
@@ -309,13 +310,13 @@ namespace AocDay20 {
                         auto loc = itr->neighborLocation(t);
                         std::pair<int32_t,int32_t> p{coords};
                         if(loc == TOP) {
-                            p.first--;
-                        } else if(loc == RIGHT) {
-                            p.second++;
-                        } else if(loc == BOTTOM) {
-                            p.first++;
-                        } else if(loc == LEFT) {
                             p.second--;
+                        } else if(loc == RIGHT) {
+                            p.first++;
+                        } else if(loc == BOTTOM) {
+                            p.second++;
+                        } else if(loc == LEFT) {
+                            p.first--;
                         } else {
                             cout << "ERROR in arragement\n";
                         }
@@ -357,13 +358,13 @@ namespace AocDay20 {
         unordered_set<int32_t> processed{};
         vector<ImageTile> used;
         buildLargeImage(tiles, x, processed, used, x.begin()->first);
-        for(const auto& t : used) {
-            cout << t.tileName << endl;
-        }
+//        for(const auto& t : used) {
+//            cout << t.tileName << endl;
+//        }
         auto l = sqrt(used.size());
         for(int i = 0; i < l; i++) {
             arrangement.push_back(vector<int32_t>(l,0));
-            printVector(arrangement.back());
+//            printVector(arrangement.back());
         }
         
         auto itr = used.begin();
@@ -394,9 +395,9 @@ namespace AocDay20 {
         }
         processed.clear();
         arrangeTiles(used, processed, itr->tileName, arrangement, coords);
-        for(const auto& v : arrangement) {
-            printVector(v);
-        }
+//        for(const auto& v : arrangement) {
+//            printVector(v);
+//        }
         
         std::vector<std::string> bigImage{};
         for(const auto& row : arrangement) {
@@ -406,6 +407,8 @@ namespace AocDay20 {
                 while(itr != used.end() && itr->tileId != iid) {
                     itr++;
                 }
+//                cout << itr->tileName << endl;
+//                itr->displayImage(true);
                 if(pImage.size() == 0) {
                     pImage = itr->getImage();
                 } else {
@@ -421,24 +424,23 @@ namespace AocDay20 {
             }
         }
         ImageTile finalImage{bigImage,222};
-        finalImage.displayImage(true);
+//        finalImage.displayImage(true);
         cout << finalImage.countHash()  << endl;
-        finalImage.rotateClockwise();
-        finalImage.rotateClockwise();
-        finalImage.flip();
-//        for(int i = 0; i < 2; i++) {
-//            for(int j = 0; j < 8; j++) {
-//                if(finalImage.countSeaMonsters() > 0) {
-//                    cout << finalImage.countHash()  << endl;
-//                }
-//                j % 2 == 0 ? finalImage.rotateClockwise() : finalImage.flip();
-//                finalImage.displayImage(true);
-//            }
-//            finalImage.flip();
-            finalImage.displayImage(true);
-//        }
 
-        cout << finalImage.countHash()  << endl;
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 4; j++) {
+                if(finalImage.countSeaMonsters() > 0) {
+                    finalImage.displayImage();
+//                    cout << finalImage.countHash()  << endl;
+                }
+                finalImage.rotateClockwise();
+//                finalImage.displayImage(true);
+            }
+            finalImage.flip();
+//            finalImage.displayImage(true);
+        }
+
+//        cout << finalImage.countHash()  << endl;
         return finalImage;
     }
 }

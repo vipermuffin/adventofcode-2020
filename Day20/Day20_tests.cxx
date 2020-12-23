@@ -134,7 +134,7 @@ TEST(Y2020_SolveDay20, FinalSolutionPartA) {
 }
 
 TEST(Y2020_SolveDay20, FinalSolutionPartB) {
-    EXPECT_EQ("---", solveb());
+    EXPECT_EQ("2489", solveb());
 }
 
 TEST(Y2020_Day20Example,Test1) {
@@ -214,6 +214,6 @@ TEST(Y2020_Day20Example,Test4) {
     auto itv = tileFactory(sampleInput);
     auto x = findArrangement(itv);
     ASSERT_EQ(24, x.getImage().size());
-    EXPECT_EQ(303,x.countHash());
+    EXPECT_EQ(273,x.countHash());
 }
 

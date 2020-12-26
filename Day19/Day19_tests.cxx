@@ -25,7 +25,7 @@ TEST(Y2020_SolveDay19, FinalSolutionPartA) {
 }
 
 TEST(Y2020_SolveDay19, FinalSolutionPartB) {
-//    EXPECT_EQ("---", solveb());
+    EXPECT_EQ("396", solveb());
 }
 
 TEST(Y2020_Day19Example,Test1) {
@@ -87,26 +87,4 @@ TEST(Y2020_Day19Example,Test4) {
     EXPECT_EQ("babb", rb[1].back());
     EXPECT_EQ(8,rb[1].size());
     EXPECT_EQ(8,rb[0].size());
-}
-
-TEST(Y2020_Day19Example,Test5) {
-    vector<string> input {
-        "0: 4 1 5",
-        "1: 2 3 | 3 2",
-        "2: 4 4 | 5 5",
-        "3: 4 5 | 5 4",
-        "4: \"a\"",
-        "5: \"b\""
-    };
-    RuleBook rb = ruleBuilder(input);
-    printVector(rb[0]);
-    ASSERT_EQ(8,rb[0].size());
-    EXPECT_EQ("aaaabb", rb[0][0]);
-    EXPECT_EQ("aaabab", rb[0][1]);
-    EXPECT_EQ("abbabb", rb[0][2]);
-    EXPECT_EQ("abbbab", rb[0][3]);
-    EXPECT_EQ("aabaab", rb[0][4]);
-    EXPECT_EQ("aabbbb", rb[0][5]);
-    EXPECT_EQ("abaaab", rb[0][6]);
-    EXPECT_EQ("ababbb", rb[0][7]);
 }

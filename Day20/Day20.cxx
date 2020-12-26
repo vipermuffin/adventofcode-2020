@@ -11,22 +11,9 @@
 #include "AoCUtils.h"
 //Common Libraries
 #include <algorithm> //std::sort, find, for_each, max_element, etc
-//#include <array>
 #include <climits>   //INT_MIN, INT_MAX, etc.
-//#include <chrono>
-//#include <iostream>
-//#include <fstream> //ifstream
-//#include <functional> //std::function
-//#include <iomanip> //setfill setw hex
 #include <map>
 #include <math.h> //sqrt
-//#include <numeric> //std::accumulate
-//#include <queue>
-//#include <regex>
-//#include <set>
-//#include <sstream>
-//#include <thread>
-//#include <tuple>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -61,8 +48,6 @@ namespace AocDay20 {
         sscanf(image.front().c_str(),"Tile %d:", &this->tileId);
         tileName = to_string(tileId);
         sides.push_back(image[1]);
-//        sides.push_back(image[1]);
-//        std::reverse(sides.back().begin(), sides.back().end());
         auto itr = image.begin()+1;
         int i = 0;
         while(itr != image.end()) {
@@ -75,19 +60,11 @@ namespace AocDay20 {
             itr++;
         }
         _image.pop_back();
-//        sides.push_back(left);
-//        std::reverse(left.begin(),left.end());
         sides.push_back(right);
-        
-//        std::reverse(right.begin(),right.end());
-//        sides.push_back(right);
+
         itr--;
         sides.push_back(*itr);
         sides.push_back(left);
-//        sides.push_back(*itr);
-//        std::reverse(sides.back().begin(), sides.back().end());
-//        cout << "Tile ID: " << tileId << " created.\n";
-//        printVector(sides);
     }
     
     ImageTile::ImageTile(const std::vector<std::string>& image, const int32_t idVal) {
@@ -203,7 +180,6 @@ namespace AocDay20 {
                 idxs.push_back(idx++);
             }
             monsterIdx.push_back(idxs);
-//            printVector(idxs);
         }
         auto limit = _image.front().size()-monster.front().size();
         auto itr = _image.begin();
@@ -273,7 +249,6 @@ namespace AocDay20 {
         }
         int64_t product{1};
         for(const auto& kvp : tileMatchCounts) {
-//            cout << kvp.first << ":" << kvp.second << endl;
             if(kvp.second.size() == 2) {
                 product *= kvp.first;
             }
@@ -358,13 +333,10 @@ namespace AocDay20 {
         unordered_set<int32_t> processed{};
         vector<ImageTile> used;
         buildLargeImage(tiles, x, processed, used, x.begin()->first);
-//        for(const auto& t : used) {
-//            cout << t.tileName << endl;
-//        }
+
         auto l = sqrt(used.size());
         for(int i = 0; i < l; i++) {
             arrangement.push_back(vector<int32_t>(l,0));
-//            printVector(arrangement.back());
         }
         
         auto itr = used.begin();
@@ -395,9 +367,6 @@ namespace AocDay20 {
         }
         processed.clear();
         arrangeTiles(used, processed, itr->tileName, arrangement, coords);
-//        for(const auto& v : arrangement) {
-//            printVector(v);
-//        }
         
         std::vector<std::string> bigImage{};
         for(const auto& row : arrangement) {
@@ -407,8 +376,7 @@ namespace AocDay20 {
                 while(itr != used.end() && itr->tileId != iid) {
                     itr++;
                 }
-//                cout << itr->tileName << endl;
-//                itr->displayImage(true);
+
                 if(pImage.size() == 0) {
                     pImage = itr->getImage();
                 } else {
@@ -424,23 +392,17 @@ namespace AocDay20 {
             }
         }
         ImageTile finalImage{bigImage,222};
-//        finalImage.displayImage(true);
-        cout << finalImage.countHash()  << endl;
 
         for(int i = 0; i < 2; i++) {
             for(int j = 0; j < 4; j++) {
                 if(finalImage.countSeaMonsters() > 0) {
-                    finalImage.displayImage();
-//                    cout << finalImage.countHash()  << endl;
+//                    finalImage.displayImage();
                 }
                 finalImage.rotateClockwise();
-//                finalImage.displayImage(true);
             }
             finalImage.flip();
-//            finalImage.displayImage(true);
         }
 
-//        cout << finalImage.countHash()  << endl;
         return finalImage;
     }
 }

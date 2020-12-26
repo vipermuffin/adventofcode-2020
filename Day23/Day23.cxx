@@ -11,89 +11,41 @@
 #include "AoCUtils.h"
 //Common Libraries
 #include <algorithm> //std::sort, find, for_each, max_element, etc
-//#include <array>
 #include <climits>   //INT_MIN, INT_MAX, etc.
-//#include <chrono>
-//#include <iostream>
-//#include <fstream> //ifstream
-//#include <functional> //std::function
-//#include <iomanip> //setfill setw hex
-//#include <map>
-//#include <math.h> //sqrt
-//#include <numeric> //std::accumulate
-//#include <queue>
-//#include <regex>
-//#include <set>
-//#include <sstream>
-//#include <thread>
-//#include <tuple>
-//#include <unordered_map>
-//#include <unordered_set>
 
 
 using namespace std;
 namespace AocDay23 {
     constexpr int32_t N = 1000000;
+    constexpr int32_t NUM_RUNS = 10000000;
     
     static const std::string InputFileName = "Day23.txt";
     std::string solvea() {
         auto input = parseFileForLines(InputFileName);
-        list<int32_t> order{3,1,5,6,7,9,8,2,4};
+        list<int32_t> order{};
+        for(const auto& c : input[0])
+            order.push_back(static_cast<int32_t>(c-'0'));
 
 		return playGame(order, 100);
     }
 
     std::string solveb() {
         auto input = parseFileForLines(InputFileName);
-        list<int32_t> order{3,1,5,6,7,9,8,2,4};
+        list<int32_t> order{};
+        for(const auto& c : input[0])
+            order.push_back(static_cast<int32_t>(c-'0'));
         for(int i = 10; i <= N; i++ ) {
             order.push_back(i);
         }
 
-        return to_string(playGame2(order, 10000000));
+        return to_string(playGame2(order, NUM_RUNS));
     }
 
     std::string playGame(std::list<int32_t>& order,int32_t rounds) {
+        playGame2(order,rounds);
+        
         auto it = order.begin();
         
-        auto minVal = *min_element(order.begin(), order.end());
-        auto maxVal = *max_element(order.begin(), order.end());
-        for(int i = 0; i < rounds; i++) {
-//            cout << *it << endl;
-            vector<int32_t> x{};
-            for(int j = 0; j<3;j++) {
-                auto cpy{it};
-                cpy++;
-                if(cpy==order.end())
-                    cpy = order.begin();
-                x.push_back(*cpy);
-                order.erase(cpy);
-            }
-            auto destVal = *it - 1;
-            if(destVal < minVal) {
-                destVal = maxVal;
-            }
-            while(find(x.begin(),x.end(),destVal) != x.end()) {
-                destVal--;
-                if(destVal < minVal) {
-                    destVal = maxVal;
-                }
-            }
-            auto itr = find(order.begin(),order.end(),destVal);
-//            cout << destVal << endl;
-//            printVector(x);
-            for(const auto val : x) {
-                itr = order.insert(++itr, val);
-            }
-            it++;
-            if(it == order.end()) {
-                it = order.begin();
-            }
-//            for(const auto& val : order) {
-//                cout << val;
-//            }
-//            cout << endl;
-        }
         string retVal(order.size()-1,'0');
         it = find(order.begin(),order.end(),1);
         for(int i = 0; i < order.size()-1;i++) {
@@ -110,24 +62,24 @@ namespace AocDay23 {
         int32_t minVal = 1;
         int32_t maxVal = order.size();
         vector<list<int32_t>::iterator> its;
-        its.resize(N+1,order.begin());
+        its.resize(order.size()+1,order.begin());
         
         auto it = order.begin();
         while(it != order.end()) {
+            //Using std::advance.  its[*it] = it++; resulted in a bad array of iterators
             its[*it] = it;
             std::advance(it, 1);
         }
         
         it = order.begin();
         for(int i = 0; i < rounds; i++) {
-            vector<int32_t> x{};
-            auto cpy = std::next(it);
+            list<int32_t> x{};
             for(int j = 0; j < 3;j++) {
+                auto cpy = std::next(it);
                 if(cpy == order.end()) {
                     cpy = order.begin();
                 }
-                x.push_back(*cpy);
-                cpy = order.erase(cpy);
+                x.splice(std::next(x.begin(),j), order, cpy, std::next(cpy));
             }
             auto destVal = *it - 1;
             if(destVal < minVal) {
@@ -141,20 +93,10 @@ namespace AocDay23 {
             }
             
             auto itr = std::next(its[destVal]);
-            if(destVal != *its[destVal]) {
-                //Something wrong
-                auto itReset = order.begin();
-                while(itReset != order.end()) {
-                    its[*itReset] = itReset;
-                    std::advance(itReset, 1);
-                }
-                cout << ".";
-                itr = std::next(its[destVal]);
-            }
-            
-            for(const auto val : x) {
-                its[val] = order.insert(itr, val);
-                itr = std::next(its[val]);
+            order.splice(itr, x);
+            for(int j = 1; j < 4; j++) {
+                itr = std::next(its[destVal],j);
+                its[*itr] = itr;
             }
             std::advance(it, 1);
             if(it == order.end()) {
@@ -164,16 +106,13 @@ namespace AocDay23 {
         
         it = its[1];
         int64_t retVal = 1;
-        cout << *it << ":";
-        it++;
+        std::advance(it,1);
         retVal = *it;
         if(it==order.end()) {
             it = order.begin();
         }
-//        cout << *it << ":";
-        it++;
+        std::advance(it,1);
         retVal *= *it;
-//        cout << *it << endl;
         
         return retVal;
     }

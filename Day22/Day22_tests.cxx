@@ -28,12 +28,6 @@ TEST(Y2020_SolveDay22, FinalSolutionPartB) {
     EXPECT_EQ("32317", solveb());
 }
 
-TEST(Y2020_Day22Example,Test1) {
-    list<int32_t> p1 {9,2,6,3,1};
-    list<int32_t> p2 {5,8,4,7,10};
-    EXPECT_EQ(306,playGame(p1, p2));
-}
-
 TEST(Y2020_Day22Example,Test2) {
     vector<int32_t> p1 {9,2,6,3,1};
     vector<int32_t> p2 {5,8,4,7,10};

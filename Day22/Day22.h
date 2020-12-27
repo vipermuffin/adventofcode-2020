@@ -15,7 +15,6 @@
 
 namespace AocDay22 {
 //Function Definitions
-    int64_t playGame(std::list<int32_t> p1, std::list<int32_t> p2);
     uint32_t playGame(std::vector<int32_t> p1, std::vector<int32_t> p2);
     std::pair<int64_t,bool> playGame2(std::vector<int32_t>& p1, std::vector<int32_t>& p2, std::unordered_map<size_t,std::pair<int64_t,bool>>& cache);
 }
